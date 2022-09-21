@@ -1,0 +1,45 @@
+openapi: 3.0.3
+
+info:
+  title: Project API
+  description: Sofya's project-api
+  version: 1.0.0
+
+externalDocs:
+  description: Repository
+  url: https://github.com/sofya-corp/docs-api
+
+servers:
+  - url: http://localhost:3012/api
+    description: Local dev
+
+paths:
+  "/users/{id}":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags: ["Users"]
+      summary: Get user by id
+      responses:
+        "200":
+          description: All went well
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+        lastName:
+          type: string
+        firstName:
+          type: string
