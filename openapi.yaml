@@ -10,11 +10,38 @@ externalDocs:
   url: https://github.com/sofya-corp/docs-api
 
 servers:
-  - url: http://localhost:3012/api
+  - url: http://localhost:3012
     description: Local dev
 
 paths:
-  "/users/{id}":
+  "/":
+    get:
+      tags: ["Auth"]
+      summary: "Get login page and csrf token"
+      responses:
+        "200":
+          description: ""
+  "/login":
+    post:
+      tags: ["Auth"]
+      summary: "Log user in with email and password"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/login"
+        required: true
+      responses:
+        "200":
+          description: ""
+  "/logout":
+    get:
+      tags: ["Auth"]
+      summary: "Logout user"
+      responses:
+        "200":
+          description: ""     
+  "/api/users/{id}":
     parameters:
       - name: id
         in: path
@@ -23,17 +50,92 @@ paths:
           type: string
     get:
       tags: ["Users"]
-      summary: Get user by id
+      summary: "Get user by id"
       responses:
         "200":
-          description: All went well
+          description: ""
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/user"
-
+  "/api/users/{id}/settings":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      tags: ["Users"]
+      summary: "Update user settings"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/settings"
+      responses:
+        "200":
+          description: ""
+          content:
+            applicatiom/json:
+              schema:
+                type: object               
+  "/api/users/{id}/theme":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      tags: ["Users"]
+      summary: "Toggle dark theme"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/theme"
+      responses:
+        "200":
+          description: ""
+          content:
+            applicatiom/json:
+              schema:
+                type: object             
+  "/api/users/me/projectRoles/{fk}":
+    parameters:
+      - name: fk
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      tags: ["Users"]
+      summary: "Update projectRole for project notification"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/projectRole"
+      responses:
+        "200":
+           description: ""
+           content:
+             application/json:
+               schema:
+                 type: object
+          
 components:
   schemas:
+    login:
+       type: object
+       properties:
+         email:
+           type: string
+         password:
+           type: string
+         _csrf:
+           type: string
     user:
       type: object
       properties:
@@ -43,3 +145,28 @@ components:
           type: string
         firstName:
           type: string
+    settings:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        emailPeriodicity:
+          type: string
+        emailSendingDay:
+          type: number
+        emailSendingHour:
+          type: number
+    theme:
+      type: object
+      properties:
+        darkThemeEnabled:
+          type: boolean
+    projectRole:
+     type: object
+     properties:
+       subscribed:
+         type: boolean
