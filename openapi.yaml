@@ -165,9 +165,6 @@ components:
       properties:
         cguAccepted:
           type: boolean
-        cguValidationDate:
-          type: string
-          format: date-time
     settings:
       type: object
       properties:
