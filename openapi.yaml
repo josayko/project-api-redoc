@@ -58,6 +58,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/user"
+    patch:
+      tags: ["Users"]
+      summary: "Accept Cgu"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/acceptCgu"
+                
   "/api/users/{id}/settings":
     parameters:
       - name: id
@@ -111,7 +122,7 @@ paths:
           type: string
     patch:
       tags: ["Users"]
-      summary: "Update projectRole for project notification"
+      summary: "Update projectRole"
       requestBody:
         content:
           application/json:
@@ -136,6 +147,10 @@ components:
            type: string
          _csrf:
            type: string
+       required:
+         - email
+         - password
+         - _csrf
     user:
       type: object
       properties:
@@ -145,6 +160,14 @@ components:
           type: string
         firstName:
           type: string
+    acceptCgu:
+      type: object
+      properties:
+        cguAccepted:
+          type: boolean
+        cguValidationDate:
+          type: string
+          format: date-time
     settings:
       type: object
       properties:
@@ -156,10 +179,15 @@ components:
           type: string
         emailPeriodicity:
           type: string
+          enum: ["daily", "weekly"]
         emailSendingDay:
           type: number
+          minimum: 0
+          maximum: 6
         emailSendingHour:
           type: number
+          minimum: 0
+          maximum: 6
     theme:
       type: object
       properties:
