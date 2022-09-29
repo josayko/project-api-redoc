@@ -67,8 +67,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/acceptCgu"
-                
+                $ref: "#/components/schemas/acceptCgu"           
   "/api/users/{id}/settings":
     parameters:
       - name: id
@@ -112,7 +111,7 @@ paths:
           content:
             applicatiom/json:
               schema:
-                type: object             
+                type: object        
   "/api/users/me/projectRoles/{fk}":
     parameters:
       - name: fk
@@ -135,7 +134,40 @@ paths:
              application/json:
                schema:
                  type: object
-          
+
+  "/api/projects/{id}":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags: ["Projects"]
+      summary: "Get project by id"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    patch:
+      tags: ["Projects"]
+      summary: "Update project settings"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/project"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/project"
+      
 components:
   schemas:
     login:
@@ -160,6 +192,49 @@ components:
           type: string
         firstName:
           type: string
+    project:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        deadline:
+          type: string
+          format: date-time
+        deadlineLabel:
+          type: string
+        street:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        position:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: ["Point"]
+            coordinates:
+              type: array
+              items:
+                type: number
+                maxItems: 2
+          required:
+            - type
+            - coordinates
+        isArchived:
+          type: boolean
     acceptCgu:
       type: object
       properties:
