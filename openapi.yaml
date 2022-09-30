@@ -205,7 +205,15 @@ components:
         tags:
           type: array
           items:
-            type: string
+            type: object
+            properties:
+              label:
+                type: string
+              color:
+                type: string
+            required:
+              - label
+              - color
         deadline:
           type: string
           format: date-time
