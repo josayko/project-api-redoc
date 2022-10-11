@@ -112,8 +112,13 @@ paths:
             applicatiom/json:
               schema:
                 type: object        
-  "/api/users/me/projectRoles/{fk}":
+  "/api/users/{id}/projectRoles/{fk}":
     parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       - name: fk
         in: path
         required: true
@@ -126,7 +131,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/projectRole"
+              $ref: "#/components/schemas/projectRoleFromUser"
       responses:
         "200":
            description: ""
@@ -134,7 +139,22 @@ paths:
              application/json:
                schema:
                  type: object
-
+  "/api/projects":
+    post:
+      tags: ["Projects"]
+      summary: "Create a new project"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createProject"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/project"
   "/api/projects/{id}":
     parameters:
       - name: id
@@ -167,9 +187,134 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/project"
-      
+
+  "/api/projects/{id}/image":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      tags: ["Projects"]
+      summary: "Delete project image"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                
+  "/api/projects/{id}/upload/image":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags: ["Projects"]
+      summary: "Upload project image"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                
+  "/api/projects/{id}/download/image":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: imageId
+        in: query
+        required: true
+        schema:
+          type: string
+    get:
+      tags: ["Projects"]
+      summary: "Get project image"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                
+  "/api/projects/{id}/applications/rel/{fk}":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: fk
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      tags: ["Projects"]
+      summary: "Link application to project"
+      responses:
+        "200":
+          description: ""
+    delete:
+      tags: ["Projects"]
+      summary: "Unlink application from project"
+      responses:
+        "200":
+          description: ""
+    
+  "/api/projects/{id}/archiveRestore":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags: ["Projects"]
+      summary: "Archive or restore project"
+      responses:
+        "200":
+          description: ""
+          
+  "/api/projects/{id}/groups":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags: ["Groups"]
+      summary: "Create project group"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createGroup"
+      responses:
+        "200":
+          description: ""
+     
+    
 components:
   schemas:
+  
     login:
        type: object
        properties:
@@ -183,15 +328,23 @@ components:
          - email
          - password
          - _csrf
+         
     user:
       type: object
       properties:
         id:
           type: string
+          readOnly: true
         lastName:
           type: string
         firstName:
           type: string
+    createProject:
+          type: object
+          properties:
+            name:
+              type: string
+              
     project:
       type: object
       properties:
@@ -243,11 +396,13 @@ components:
             - coordinates
         isArchived:
           type: boolean
+          
     acceptCgu:
       type: object
       properties:
         cguAccepted:
           type: boolean
+          
     settings:
       type: object
       properties:
@@ -268,12 +423,23 @@ components:
           type: number
           minimum: 0
           maximum: 6
+          
+    createGroup:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+      required:
+        - code
+ 
     theme:
       type: object
       properties:
         darkThemeEnabled:
           type: boolean
-    projectRole:
+    projectRoleFromUser :
      type: object
      properties:
        subscribed:
