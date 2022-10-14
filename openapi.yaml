@@ -301,17 +301,46 @@ paths:
           type: string
     post:
       tags: ["Groups"]
-      summary: "Create project group"
+      summary: "Create project groups"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/createGroup"
+              $ref: "#/components/schemas/createGroups"
       responses:
         "200":
           description: ""
-     
-    
+          
+  "/api/projects/{id}/groups/{fk}":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: fk
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      tags: ["Groups"]
+      summary: "Delete project group"
+      responses:
+        "204":
+          description: ""
+    patch:
+      tags: ["Groups"]
+      summary: "Update project group"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateGroup"
+      responses:
+        "204":
+          description: ""
+         
 components:
   schemas:
   
@@ -424,15 +453,47 @@ components:
           minimum: 0
           maximum: 6
           
-    createGroup:
+    createGroups:
+      type: array
+      items:
+        type: object
+        properties:
+          code:
+            type: string
+          name:
+            type: string
+        required:
+          - code
+    
+    updateGroup:
       type: object
       properties:
+        city:
+          type: string
         code:
           type: string
+        country:
+          type: string
+        email:
+          type: string
+        isCompany:
+          type: boolean
+        isPrivate:
+          type: boolean
         name:
+          type: string
+        phone:
+          type: string
+        postalCode:
+          type: string
+        receiver:
+          type: string
+        street:
           type: string
       required:
         - code
+        - isCompany
+        - isPrivate
  
     theme:
       type: object
