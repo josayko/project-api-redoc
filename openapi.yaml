@@ -340,6 +340,133 @@ paths:
       responses:
         "204":
           description: ""
+
+  "/api/projects/{id}/groups/sort":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      tags: ["Groups"]
+      summary: "Sort companies order"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/sortCompanies"
+      responses:
+        "204":
+          description: ""
+ 
+  "/api/projects/{pid}/groups/{gid}/users/rel":
+    parameters:
+      - name: pid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: gid
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags: ["Groups"]
+      summary: "Add user to group"
+      responses:
+        "200":
+          description: ""
+ 
+  "/api/projects/{pid}/groups/{gid}/users/rel/{fk}":
+    parameters:
+      - name: pid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: gid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: fk
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      tags: ["Groups"]
+      summary: "Remove user from group"
+      responses:
+        "204":
+          description: ""
+
+  "/api/groups/{id}/image":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      tags: ["Groups"]
+      summary: "Delete group image"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                
+  "/api/groups/{id}/upload/image":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags: ["Groups"]
+      summary: "Upload group image"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                
+  "/api/groups/{id}/download/image":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: imageId
+        in: query
+        required: true
+        schema:
+          type: string
+    get:
+      tags: ["Groups"]
+      summary: "Get group image"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/octet-stream:
+              schema:
+                type: string
          
 components:
   schemas:
@@ -494,12 +621,21 @@ components:
         - code
         - isCompany
         - isPrivate
- 
+        
+    sortCompanies:
+      type: object
+      properties:
+        companyIds:
+          type: array
+          items:
+            type: string
+          
     theme:
       type: object
       properties:
         darkThemeEnabled:
           type: boolean
+          
     projectRoleFromUser :
      type: object
      properties:
