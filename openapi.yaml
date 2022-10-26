@@ -291,7 +291,53 @@ paths:
       responses:
         "200":
           description: ""
+ 
+  "/api/projects/{id}/users":
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags: ["Projects"]
+      summary: "Add user to project"
+      responses:
+        "200":
+          description: ""
           
+
+  "/api/projects/{projectId}/users/{userId}/applications/{applicationId}":
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: applicationId
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      tags: ["Projects"]
+      summary: "Set user application"
+      responses:
+        "200":
+          description: ""
+    
+    delete:
+      tags: ["Projects"]
+      summary: "Unset user application"
+      responses:
+        "204":
+          description: ""
+   
   "/api/projects/{id}/groups":
     parameters:
       - name: id
@@ -467,6 +513,30 @@ paths:
             application/octet-stream:
               schema:
                 type: string
+ 
+  "/api/applications":
+    get:
+      tags: ["Applications"]
+      summary: "Get all applications"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+
+  "/api/projectRoles":
+    patch:
+      tags: ["Project Roles"]
+      summary: "Update project roles"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
          
 components:
   schemas:
